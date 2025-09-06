@@ -11,20 +11,20 @@ use App\Traits\WithGetFilterDataApi;
 class ContentController extends Controller
 {
     use WithGetFilterDataApi;
-    public function features(Request $request)
+    public function contents(Request $request)
     {
         $query = Content::where('hotel_id', $this->getHotel());
     
         if ($request->has('after')) {
             $query->where('version', '>', $request->after ?? 0);
         }
-        
-        if ($request->has('id') && !empty($request->id)) {
 
-            $ids = is_string($request->id) 
-                ? explode(',', $request->id) 
-                : (array) $request->id;
-            
+        if ($request->has('ids') && !empty($request->ids)) {
+
+            $ids = is_string($request->ids)
+                ? explode(',', $request->ids)
+                : (array) $request->ids;
+
             
             $ids = array_filter(array_map('intval', $ids));
             
@@ -45,9 +45,10 @@ class ContentController extends Controller
         );
         return $this->respondWithSuccess($data);
     }
-    public function featureChangeList(Request $request) {
+    public function contentsChangeList(Request $request) {
         $data = $this->getDataWithFilter(
             model: Content::where('hotel_id', $this->getHotel())
+                    ->select('id', 'version','is_deleted')
                     ->where('version', '>', $request->after ?? 0),
             searchBy: [
                 'name',
@@ -61,20 +62,20 @@ class ContentController extends Controller
         return $this->respondWithSuccess($data);
     }
 
-    public function featureItems(Request $request)
+    public function contentItems(Request $request)
     {
         $query = ContentItem::where('hotel_id', $this->getHotel());
     
         if ($request->has('after')) {
             $query->where('version', '>', $request->after ?? 0);
         }
-        
-        if ($request->has('id') && !empty($request->id)) {
 
-            $ids = is_string($request->id) 
-                ? explode(',', $request->id) 
-                : (array) $request->id;
-            
+        if ($request->has('ids') && !empty($request->ids)) {
+
+            $ids = is_string($request->ids)
+                ? explode(',', $request->ids)
+                : (array) $request->ids;
+
             
             $ids = array_filter(array_map('intval', $ids));
             
@@ -96,9 +97,10 @@ class ContentController extends Controller
         return $this->respondWithSuccess($data);
     }
 
-    public function featureItemChangeList(Request $request) {
+    public function contentItemChangeList(Request $request) {
         $data = $this->getDataWithFilter(
             model: ContentItem::where('hotel_id', $this->getHotel())
+                    ->select('id', 'version','is_deleted')
                     ->where('version', '>', $request->after ?? 0),
             searchBy: [
                 'name',

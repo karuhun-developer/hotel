@@ -16,13 +16,13 @@ class ApplicationController extends Controller
         if ($request->has('after')) {
             $query->where('version', '>', $request->after ?? 0);
         }
-        
-        if ($request->has('id') && !empty($request->id)) {
 
-            $ids = is_string($request->id) 
-                ? explode(',', $request->id) 
-                : (array) $request->id;
-            
+        if ($request->has('ids') && !empty($request->ids)) {
+
+            $ids = is_string($request->ids)
+                ? explode(',', $request->ids)
+                : (array) $request->ids;
+
             
             $ids = array_filter(array_map('intval', $ids));
             
@@ -47,6 +47,7 @@ class ApplicationController extends Controller
     public function changelist(Request $request) {
         $data = $this->getDataWithFilter(
             model: Application::where('hotel_id', $this->getHotel())
+                    ->select('id', 'version','is_deleted')
                     ->where('version', '>', $request->after ?? 0),
             searchBy: [
                 'name',
