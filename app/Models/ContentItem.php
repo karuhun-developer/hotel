@@ -27,6 +27,7 @@ class ContentItem extends Model
     protected $casts = [
         'is_deleted' => 'boolean',
         'is_active' => 'boolean',
+        'version' => 'integer',
     ];
 
     // Relationships

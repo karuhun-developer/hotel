@@ -19,7 +19,8 @@ class Application extends Model
     ];
 
     protected $casts = [
-        'is_deleted' => 'boolean'
+        'is_deleted' => 'boolean',
+        'version' => 'integer'
     ];
 
     public static function version() {
