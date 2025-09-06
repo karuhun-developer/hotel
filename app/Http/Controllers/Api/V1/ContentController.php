@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\FeatureCategory;
-use App\Models\FeatureItem;
+use App\Models\Content;
+use App\Models\ContentItem;
 use Illuminate\Http\Request;
 use App\Traits\WithGetFilterDataApi;
 
-class FeatureController extends Controller
+class ContentController extends Controller
 {
     use WithGetFilterDataApi;
     public function features(Request $request)
     {
-        $query = FeatureCategory::where('hotel_id', $this->getHotel());
+        $query = Content::where('hotel_id', $this->getHotel());
     
         if ($request->has('after')) {
             $query->where('version', '>', $request->after ?? 0);
@@ -47,7 +47,7 @@ class FeatureController extends Controller
     }
     public function featureChangeList(Request $request) {
         $data = $this->getDataWithFilter(
-            model: FeatureCategory::where('hotel_id', $this->getHotel())
+            model: Content::where('hotel_id', $this->getHotel())
                     ->where('version', '>', $request->after ?? 0),
             searchBy: [
                 'name',
@@ -63,7 +63,7 @@ class FeatureController extends Controller
 
     public function featureItems(Request $request)
     {
-        $query = FeatureItem::where('hotel_id', $this->getHotel());
+        $query = ContentItem::where('hotel_id', $this->getHotel());
     
         if ($request->has('after')) {
             $query->where('version', '>', $request->after ?? 0);
@@ -98,7 +98,7 @@ class FeatureController extends Controller
 
     public function featureItemChangeList(Request $request) {
         $data = $this->getDataWithFilter(
-            model: FeatureItem::where('hotel_id', $this->getHotel())
+            model: ContentItem::where('hotel_id', $this->getHotel())
                     ->where('version', '>', $request->after ?? 0),
             searchBy: [
                 'name',
