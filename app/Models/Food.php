@@ -19,11 +19,13 @@ class Food extends Model
         'image',
         'price',
         'version',
-        'is_deleted'
+        'is_deleted',
+        'is_active'
     ];
 
     protected $casts = [
         'is_deleted' => 'boolean',
+        'is_active' => 'boolean',
         'version' => 'integer',
     ];
 

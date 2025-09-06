@@ -16,11 +16,13 @@ class FoodCategory extends Model
         'description',
         'image',
         'version',
-        'is_deleted'
+        'is_deleted',
+        'is_active'
     ];
 
     protected $casts = [
         'is_deleted' => 'boolean',
+        'is_active' => 'boolean',
         'version' => 'integer',
     ];
 
