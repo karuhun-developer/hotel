@@ -28,6 +28,8 @@ class ContentItem extends Model
         'is_deleted' => 'boolean',
         'is_active' => 'boolean',
         'version' => 'integer',
+        'hotel_id' => 'integer',
+        'content_id' => 'integer',
     ];
 
     // Relationships
