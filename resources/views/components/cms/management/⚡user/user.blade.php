@@ -149,14 +149,27 @@
 
             <flux:field>
                 <flux:label>Role</flux:label>
-                <flux:select wire:model="role" placeholder="Select role ....">
+                <flux:select wire:model.live="role" placeholder="Select role ....">
                     <flux:select.option value="">-- Select Role --</flux:select.option>
-                    @foreach ($roles as $role)
-                        <flux:select.option value="{{ $role->name }}">{{ $role->name }}</flux:select.option>
+                    @foreach ($roles as $r)
+                        <flux:select.option value="{{ $r->name }}">{{ $r->name }}</flux:select.option>
                     @endforeach
                 </flux:select>
                 <flux:error name="role" />
             </flux:field>
+
+            @if (in_array($role, ['hotel_admin', 'hotel_receptionist']) && auth()->user()->isSuperAdmin())
+                <flux:field>
+                    <flux:label>Tenant</flux:label>
+                    <flux:select wire:model.live="tenant_id" placeholder="Select tenant ....">
+                        <flux:select.option value="">-- Select Tenant --</flux:select.option>
+                        @foreach ($tenants as $tenant)
+                            <flux:select.option value="{{ $tenant->id }}">{{ $tenant->name }}</flux:select.option>
+                        @endforeach
+                    </flux:select>
+                    <flux:error name="tenant_id" />
+                </flux:field>
+            @endif
 
             <flux:field>
                 <flux:label>Name</flux:label>

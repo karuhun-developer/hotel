@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -69,5 +71,25 @@ class User extends Authenticatable
     public function apiKeys()
     {
         return $this->hasMany(User\ApiKey::class);
+    }
+
+    public function tenant()
+    {
+        return $this->hasOne(Tenant\TenantUser::class);
+    }
+
+    #[Scope]
+    protected function isSuperAdmin(): bool {
+        return $this->hasRole('superadmin');
+    }
+
+    #[Scope]
+    protected function isHotelAdmin(): bool {
+        return $this->hasRole('hotel_admin');
+    }
+
+    #[Scope]
+    protected function isHotelReceptionist(): bool {
+        return $this->hasRole('hotel_receptionist');
     }
 }

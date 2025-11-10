@@ -79,8 +79,13 @@ new class extends BaseComponent
         }
 
         // Query data with filters
+        $model = Tenant::query()
+            ->when(! auth()->user()->isSuperAdmin(), function ($query) {
+                $query->where('id', auth()->user()->tenant?->tenant_id);
+            });
+
         $data = $this->getDataWithFilter(
-            model: new Tenant,
+            model: $model,
             searchBy: $this->searchBy,
             orderBy: $this->paginationOrderBy,
             order: $this->paginationOrder,

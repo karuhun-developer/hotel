@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Spatie\Permission;
 use App\Models\Spatie\Role;
+use App\Models\Tenant\Tenant;
 use App\Models\User;
 use App\Models\User\ApiKey;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -50,6 +51,10 @@ class PermissionSeeder extends Seeder
         'create'.ApiKey::class,
         'update'.ApiKey::class,
         'delete'.ApiKey::class,
+        // Tenant management on his own hotel
+        'view'.Tenant::class,
+        'show'.Tenant::class,
+        'update'.Tenant::class,
     ];
 
     // List hotel receptionist permissions

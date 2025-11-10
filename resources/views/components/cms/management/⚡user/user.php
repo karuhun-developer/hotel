@@ -1,7 +1,10 @@
 <?php
 
+use App\Enums\CommonStatusEnum;
 use App\Livewire\BaseComponent;
 use App\Models\Spatie\Role;
+use App\Models\Tenant\Tenant;
+use App\Models\Tenant\TenantUser;
 use App\Models\User;
 use Livewire\Attributes\On;
 
@@ -37,6 +40,9 @@ new class extends BaseComponent
     // Roles list
     public $roles;
 
+    // Tenant list
+    public $tenants;
+
     public function mount()
     {
         // Check if user has permission to view
@@ -47,8 +53,17 @@ new class extends BaseComponent
         // Set default order by
         $this->paginationOrderBy = 'users.created_at';
 
-        // Get roles list
-        $this->roles = Role::all();
+
+        if (auth()->user()->isSuperAdmin()) {
+            // Get tenants list
+            $this->tenants = Tenant::where('status', CommonStatusEnum::ACTIVE)->get();
+            // Get roles list
+            $this->roles = Role::all();
+        } else {
+            $this->tenants = Tenant::where('id', auth()->user()->tenant?->tenant_id)->get();
+            // Only get receptionist role for non-super admin users
+            $this->roles = Role::whereIn('name', ['hotel_receptionist'])->get();
+        }
     }
 
     public function render()
@@ -88,6 +103,8 @@ new class extends BaseComponent
 
     public $password;
 
+    public $tenant_id;
+
     // Get record data
     public function getRecordData($id)
     {
@@ -104,6 +121,7 @@ new class extends BaseComponent
         $this->name = $record->name;
         $this->email = $record->email;
         $this->password = $record->password;
+        $this->tenant_id = $record->tenant?->tenant_id;
     }
 
     // Reset record data
@@ -115,6 +133,7 @@ new class extends BaseComponent
             'name',
             'email',
             'password',
+            'tenant_id',
         ]);
 
         $this->guard_name = 'api';
@@ -128,11 +147,15 @@ new class extends BaseComponent
             ? 'required|string|email|max:255|unique:users,email,'.$this->recordId
             : 'required|string|email|max:255|unique:users,email';
 
+        // Tenant rules
+        $tenantRule = auth()->user()->isSuperAdmin() ? 'nullable|exists:tenants,id' : 'nullable';
+
         $this->validate([
             'role' => 'required|string|exists:roles,name',
             'name' => 'required|string|max:255',
             'email' => $emailRule,
             'password' => $this->isUpdate ? 'nullable' : 'required|string|min:8',
+            'tenant_id' => $tenantRule,
         ]);
 
         // bcrypt password
@@ -142,6 +165,23 @@ new class extends BaseComponent
 
         // Save record
         $record = $this->save();
+
+        // Assing tenant
+        if (auth()->user()->isSuperAdmin() && $this->tenant_id) {
+            TenantUser::where('user_id', $record->id)->delete();
+            TenantUser::create([
+                'tenant_id' => $this->tenant_id,
+                'user_id' => $record->id,
+            ]);
+        } else {
+            if (auth()->user()->tenant) {
+                TenantUser::where('user_id', $record->id)->delete();
+                TenantUser::create([
+                    'tenant_id' => auth()->user()->tenant->tenant_id,
+                    'user_id' => $record->id,
+                ]);
+            }
+        }
 
         // Sync role
         $record->syncRoles([$this->role]);
