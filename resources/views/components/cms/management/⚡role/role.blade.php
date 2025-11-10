@@ -73,7 +73,6 @@
                                         variant="primary"
                                         color="yellow"
                                         icon="shield-check"
-                                        wire:navigate
                                         href="{{ route('cms.management.role.permission') }}?role_id={{ $d->id }}"
                                     >
                                         Permissions

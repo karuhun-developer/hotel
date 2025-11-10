@@ -8,7 +8,7 @@
         <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-            <a href="{{ route('cms.dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
+            <a href="{{ route('cms.dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse">
                 <x-app-logo />
             </a>
 
@@ -70,8 +70,7 @@
                                 @foreach($mainMenu->subMenu as $child)
                                     <flux:navlist.item
                                         href="{{ echoRoute($child->url) }}"
-                                        :active="menuActive(explode(',', $child->active_pattern))"
-                                        wire:navigate>
+                                        :active="menuActive(explode(',', $child->active_pattern))">
                                         {{ $child->name }}
                                     </flux:navlist.item>
                                 @endforeach
@@ -80,8 +79,7 @@
                             <flux:navlist.item
                                 icon="{{ $mainMenu->icon }}"
                                 href="{{ echoRoute($mainMenu->url) }}"
-                                :active="menuActive(explode(',', $mainMenu->active_pattern))"
-                                wire:navigate>
+                                :active="menuActive(explode(',', $mainMenu->active_pattern))">
                                 {{ $mainMenu->name }}
                             </flux:navlist.item>
                         @endif
@@ -132,7 +130,7 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item :href="route('profile.edit')" icon="cog">{{ __('Settings') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -182,7 +180,7 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item :href="route('profile.edit')" icon="cog">{{ __('Settings') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />

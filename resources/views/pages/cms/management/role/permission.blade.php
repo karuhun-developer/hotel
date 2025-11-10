@@ -42,7 +42,7 @@ render(function (View $view) {
                     size="sm"
                     variant="primary"
                     icon="arrow-left"
-                    wire:navigate
+
                 />
                 <h1 class="text-3xl font-bold">{{ $title }}</h1>
             </div>
