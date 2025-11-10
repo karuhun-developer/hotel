@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Spatie\Permission;
 use App\Models\Spatie\Role;
 use App\Models\User;
+use App\Models\User\ApiKey;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
@@ -35,9 +36,25 @@ class PermissionSeeder extends Seeder
     private $superAdminExcludePermission = [
     ];
 
-    // List user permissions
-    private $userPermissions = [
+    // List hotel admin permissions
+    private $hotelAdminPermissions = [
+        // User management on his own hotel
         'view'.User::class,
+        'show'.User::class,
+        'create'.User::class,
+        'update'.User::class,
+        'delete'.User::class,
+        // API Key permissions
+        'view'.ApiKey::class,
+        'show'.ApiKey::class,
+        'create'.ApiKey::class,
+        'update'.ApiKey::class,
+        'delete'.ApiKey::class,
+    ];
+
+    // List hotel receptionist permissions
+    private $hotelReceptionistPermissions = [
+
     ];
 
     /**
@@ -53,7 +70,8 @@ class PermissionSeeder extends Seeder
 
         // Create roles
         $roleSuperAdmin = Role::findOrCreate('superadmin', $this->guardName);
-        $roleUser = Role::findOrCreate('user', $this->guardName);
+        $roleHotelAdmin = Role::findOrCreate('hotel_admin', $this->guardName);
+        $roleHotelReceptionist = Role::findOrCreate('hotel_receptionist', $this->guardName);
 
         // Loop through each model and create permissions
         foreach ($this->prefixPermission as $permission) {
@@ -68,8 +86,12 @@ class PermissionSeeder extends Seeder
                     ]);
 
                 // Assign permissions to roles
-                if (in_array($permissionName, $this->userPermissions)) {
-                    $roleUser->givePermissionTo($permissionName);
+                if (in_array($permissionName, $this->hotelAdminPermissions)) {
+                    $roleHotelAdmin->givePermissionTo($permissionName);
+                }
+
+                if (in_array($permissionName, $this->hotelReceptionistPermissions)) {
+                    $roleHotelReceptionist->givePermissionTo($permissionName);
                 }
 
                 // Exclude superadmin permissions
