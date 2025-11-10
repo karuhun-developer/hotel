@@ -20,8 +20,22 @@ class SuperadminMenuSeeder extends Seeder
 
         // Create menu
         $this->dashboardMenu();
+        $this->tenantMenu();
         $this->apiKeyMenu();
         $this->managementMenu();
+    }
+
+    public function tenantMenu()
+    {
+        Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'Tenants',
+            'url' => 'cms.tenant.index',
+            'icon' => 'building-office',
+            'order' => 2,
+            'active_pattern' => 'cms.tenant',
+            'status' => 1,
+        ]);
     }
 
     public function dashboardMenu()
