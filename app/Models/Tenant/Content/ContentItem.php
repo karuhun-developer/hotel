@@ -11,7 +11,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class ContentItem extends Model implements HasMedia
 {
-    use LogsActivity, SoftDeletes, InteractsWithMedia;
+    use InteractsWithMedia, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'content_id',

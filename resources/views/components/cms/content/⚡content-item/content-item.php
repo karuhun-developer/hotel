@@ -179,7 +179,7 @@ new class extends BaseComponent
             'content_id' => 'required|exists:contents,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:' . implode(',', CommonStatusEnum::toArray()),
+            'status' => 'required|in:'.implode(',', CommonStatusEnum::toArray()),
             // Max 50MB
             'image' => 'nullable|image|max:51200',
         ]);

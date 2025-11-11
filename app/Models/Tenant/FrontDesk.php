@@ -6,18 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Room extends Model
+class FrontDesk extends Model
 {
     use LogsActivity;
 
     protected $fillable = [
         'tenant_id',
-        'room_type_id',
-        'no',
+        'room_id',
         'guest_name',
-        'greeting',
-        'device_name',
-        'is_birthday',
+        'check_in',
+        'check_out',
+    ];
+
+    protected $casts = [
+        'check_in' => 'datetime',
+        'check_out' => 'datetime',
     ];
 
     // Get the activity log options.
@@ -31,13 +34,8 @@ class Room extends Model
         return $this->belongsTo(Tenant::class);
     }
 
-    public function roomType()
+    public function room()
     {
-        return $this->belongsTo(RoomType::class);
-    }
-
-    public function frontDesks()
-    {
-        return $this->hasMany(FrontDesk::class);
+        return $this->belongsTo(Room::class);
     }
 }

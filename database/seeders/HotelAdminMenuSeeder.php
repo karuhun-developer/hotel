@@ -6,7 +6,7 @@ use App\Models\Menu\Menu;
 use App\Models\Spatie\Role;
 use Illuminate\Database\Seeder;
 
-class SuperadminMenuSeeder extends Seeder
+class HotelAdminMenuSeeder extends Seeder
 {
     public $role;
 
@@ -15,16 +15,14 @@ class SuperadminMenuSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->role = Role::where('name', 'superadmin')->first();
+        $this->role = Role::where('name', 'hotel_admin')->first();
         Menu::where('role_id', $this->role->id)->delete();
 
-        // Create menu
         $this->dashboardMenu();
         $this->frontDeskMenu();
         $this->tenantMenu();
         $this->roomMenu();
         $this->contentMenu();
-        $this->managementMenu();
         $this->apiKeyMenu();
     }
 
@@ -123,51 +121,6 @@ class SuperadminMenuSeeder extends Seeder
             'url' => 'cms.content.item',
             'order' => 2,
             'active_pattern' => 'cms.content.item',
-            'status' => 1,
-        ]);
-    }
-
-    public function managementMenu()
-    {
-        $management = Menu::create([
-            'role_id' => $this->role->id,
-            'name' => 'Managements',
-            'url' => '#',
-            'icon' => 'cog',
-            'order' => 999,
-            'active_pattern' => 'cms.management',
-            'status' => 1,
-        ]);
-        $management->subMenu()->create([
-            'role_id' => $this->role->id,
-            'name' => 'Permission',
-            'url' => 'cms.management.permission',
-            'order' => 1,
-            'active_pattern' => 'cms.management.permission',
-            'status' => 1,
-        ]);
-        $management->subMenu()->create([
-            'role_id' => $this->role->id,
-            'name' => 'Role',
-            'url' => 'cms.management.role',
-            'order' => 2,
-            'active_pattern' => 'cms.management.role',
-            'status' => 1,
-        ]);
-        $management->subMenu()->create([
-            'role_id' => $this->role->id,
-            'name' => 'Menu',
-            'url' => 'cms.management.menu',
-            'order' => 3,
-            'active_pattern' => 'cms.management.menu',
-            'status' => 1,
-        ]);
-        $management->subMenu()->create([
-            'role_id' => $this->role->id,
-            'name' => 'User',
-            'url' => 'cms.management.user',
-            'order' => 4,
-            'active_pattern' => 'cms.management.user',
             'status' => 1,
         ]);
     }

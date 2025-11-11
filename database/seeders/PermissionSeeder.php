@@ -4,6 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Spatie\Permission;
 use App\Models\Spatie\Role;
+use App\Models\Tenant\Content\Content;
+use App\Models\Tenant\Content\ContentItem;
+use App\Models\Tenant\FrontDesk;
+use App\Models\Tenant\Room;
+use App\Models\Tenant\RoomType;
 use App\Models\Tenant\Tenant;
 use App\Models\User;
 use App\Models\User\ApiKey;
@@ -55,11 +60,52 @@ class PermissionSeeder extends Seeder
         'view'.Tenant::class,
         'show'.Tenant::class,
         'update'.Tenant::class,
+        // Front Desk permissions
+        'view'.FrontDesk::class,
+        'show'.FrontDesk::class,
+        'create'.FrontDesk::class,
+        'update'.FrontDesk::class,
+        'delete'.FrontDesk::class,
+        // Content Permissions
+        'view'.Content::class,
+        'show'.Content::class,
+        'create'.Content::class,
+        'update'.Content::class,
+        'delete'.Content::class,
+        // Content Item Permissions
+        'view'.ContentItem::class,
+        'show'.ContentItem::class,
+        'create'.ContentItem::class,
+        'update'.ContentItem::class,
+        'delete'.ContentItem::class,
+        // Room permissions
+        'view'.Room::class,
+        'show'.Room::class,
+        'create'.Room::class,
+        'update'.Room::class,
+        'delete'.Room::class,
+        // Room Type permissions
+        'view'.RoomType::class,
+        'show'.RoomType::class,
+        'create'.RoomType::class,
+        'update'.RoomType::class,
+        'delete'.RoomType::class,
     ];
 
     // List hotel receptionist permissions
     private $hotelReceptionistPermissions = [
-
+        // Front Desk permissions
+        'view'.FrontDesk::class,
+        'show'.FrontDesk::class,
+        'create'.FrontDesk::class,
+        'update'.FrontDesk::class,
+        'delete'.FrontDesk::class,
+        // Room permissions
+        'view'.Room::class,
+        'show'.Room::class,
+        // Room Type permissions
+        'view'.RoomType::class,
+        'show'.RoomType::class,
     ];
 
     /**

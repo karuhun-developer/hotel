@@ -143,7 +143,7 @@ new class extends BaseComponent
         $this->validate([
             'tenant_id' => 'required|exists:tenants,id',
             'name' => 'required|string|max:255',
-            'status' => 'required|in:' . implode(',', CommonStatusEnum::toArray()),
+            'status' => 'required|in:'.implode(',', CommonStatusEnum::toArray()),
             // Max 50MB
             'image' => 'nullable|image|max:51200',
         ]);

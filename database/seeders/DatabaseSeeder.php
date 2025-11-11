@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             UserSeeder::class,
             SuperadminMenuSeeder::class,
+            HotelAdminMenuSeeder::class,
+            HotelReceptionistMenuSeeder::class,
         ]);
     }
 }

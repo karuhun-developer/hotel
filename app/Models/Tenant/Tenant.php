@@ -63,4 +63,9 @@ class Tenant extends Model
     {
         return $this->hasMany(\App\Models\Tenant\Content\ContentItem::class);
     }
+
+    public function frontDesks()
+    {
+        return $this->hasMany(FrontDesk::class);
+    }
 }
