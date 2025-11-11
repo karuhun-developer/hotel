@@ -53,4 +53,14 @@ class Tenant extends Model
     {
         return $this->hasMany(Room::class);
     }
+
+    public function contents()
+    {
+        return $this->hasMany(\App\Models\Tenant\Content\Content::class);
+    }
+
+    public function contentItems()
+    {
+        return $this->hasMany(\App\Models\Tenant\Content\ContentItem::class);
+    }
 }
