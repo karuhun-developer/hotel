@@ -83,6 +83,9 @@
                                 {{ $d->status->label() }}
                             </flux:badge>
                         </x-ui.table.td>
+                        <x-ui.table.td>
+                            {{ $d->created_at->format('Y-m-d H:i:s') }}
+                        </x-ui.table.td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
                                 @if (auth()->user()->can('update' . $this->modelInstance))

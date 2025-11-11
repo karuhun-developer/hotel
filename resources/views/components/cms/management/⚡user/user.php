@@ -53,7 +53,6 @@ new class extends BaseComponent
         // Set default order by
         $this->paginationOrderBy = 'users.created_at';
 
-
         if (auth()->user()->isSuperAdmin()) {
             // Get tenants list
             $this->tenants = Tenant::where('status', CommonStatusEnum::ACTIVE)->get();
@@ -77,6 +76,13 @@ new class extends BaseComponent
             ->join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
             ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
             ->select('users.*', 'roles.name as role');
+
+        // If not super admin, limit to tenant users
+        if (! auth()->user()->isSuperAdmin()) {
+            $model->whereHas('tenant', function ($query) {
+                $query->where('tenant_id', auth()->user()->tenant?->tenant_id);
+            });
+        }
 
         $data = $this->getDataWithFilter(
             model: $model,

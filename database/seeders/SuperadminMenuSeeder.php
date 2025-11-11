@@ -21,8 +21,9 @@ class SuperadminMenuSeeder extends Seeder
         // Create menu
         $this->dashboardMenu();
         $this->tenantMenu();
-        $this->apiKeyMenu();
+        $this->roomMenu();
         $this->managementMenu();
+        $this->apiKeyMenu();
     }
 
     public function tenantMenu()
@@ -38,6 +39,36 @@ class SuperadminMenuSeeder extends Seeder
         ]);
     }
 
+    public function roomMenu()
+    {
+        $room = Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'Rooms',
+            'url' => '#',
+            'icon' => 'door-open',
+            'order' => 3,
+            'active_pattern' => 'cms.room',
+            'status' => 1,
+        ]);
+
+        $room->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Room Types',
+            'url' => 'cms.room.room-type',
+            'order' => 1,
+            'active_pattern' => 'cms.room.room-type',
+            'status' => 1,
+        ]);
+        $room->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Rooms',
+            'url' => 'cms.room.room',
+            'order' => 2,
+            'active_pattern' => 'cms.room.room',
+            'status' => 1,
+        ]);
+    }
+
     public function dashboardMenu()
     {
         Menu::create([
@@ -47,19 +78,6 @@ class SuperadminMenuSeeder extends Seeder
             'icon' => 'map',
             'order' => 1,
             'active_pattern' => 'cms.dashboard',
-            'status' => 1,
-        ]);
-    }
-
-    public function apiKeyMenu()
-    {
-        Menu::create([
-            'role_id' => $this->role->id,
-            'name' => 'API Key',
-            'url' => 'cms.api-key',
-            'icon' => 'key',
-            'order' => 998,
-            'active_pattern' => 'cms.api-key',
             'status' => 1,
         ]);
     }
@@ -105,6 +123,19 @@ class SuperadminMenuSeeder extends Seeder
             'url' => 'cms.management.user',
             'order' => 4,
             'active_pattern' => 'cms.management.user',
+            'status' => 1,
+        ]);
+    }
+
+    public function apiKeyMenu()
+    {
+        Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'API Key',
+            'url' => 'cms.api-key',
+            'icon' => 'key',
+            'order' => 1000,
+            'active_pattern' => 'cms.api-key',
             'status' => 1,
         ]);
     }

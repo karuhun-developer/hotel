@@ -79,17 +79,20 @@ class User extends Authenticatable
     }
 
     #[Scope]
-    protected function isSuperAdmin(): bool {
+    protected function isSuperAdmin(): bool
+    {
         return $this->hasRole('superadmin');
     }
 
     #[Scope]
-    protected function isHotelAdmin(): bool {
+    protected function isHotelAdmin(): bool
+    {
         return $this->hasRole('hotel_admin');
     }
 
     #[Scope]
-    protected function isHotelReceptionist(): bool {
+    protected function isHotelReceptionist(): bool
+    {
         return $this->hasRole('hotel_receptionist');
     }
 }
