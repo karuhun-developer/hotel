@@ -23,20 +23,7 @@ class UserSeeder extends Seeder
         );
 
         // Add role to the superadmin user
-        $superadmin->assignRole('superadmin');
+        $superadmin->syncRoles(['superadmin']);
         $superadmin->markEmailAsVerified();
-
-        $user = User::firstOrCreate(
-            [
-                'email' => 'user@user.com',
-            ],
-            [
-                'name' => 'User',
-                'password' => bcrypt('password'),
-            ],
-        );
-
-        // Add role to the user
-        $user->assignRole('user');
     }
 }

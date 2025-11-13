@@ -10,6 +10,13 @@
             </flux:button>
         @endif
     </div>
+    @if (auth()->user()->isSuperAdmin())
+        <div class="flex items-center justify-between mt-5 mb-4">
+            <div class="flex items-center gap-4">
+                <x-ui.filter.tenant :$tenants />
+            </div>
+        </div>
+    @endif
     <div class="flex items-center justify-between mt-5 mb-4 gap-4">
         <div class="flex items-center gap-2">
             <p class="text-sm text-gray-600">Show</p>

@@ -1,16 +1,15 @@
 <?php
 
-use App\Enums\CommonStatusEnum;
 use App\Livewire\BaseComponent;
 use App\Models\Tenant\RoomType;
-use App\Models\Tenant\Tenant;
+use App\Traits\WithFilterTenantDateRange;
 use App\Traits\WithMediaCollection;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 
 new class extends BaseComponent
 {
-    use WithFileUploads, WithMediaCollection;
+    use WithFileUploads, WithFilterTenantDateRange, WithMediaCollection;
 
     // Model instance
     public $modelInstance = RoomType::class;
@@ -35,8 +34,6 @@ new class extends BaseComponent
         ],
     ];
 
-    public $tenants = [];
-
     public function mount()
     {
         // Check if user has permission to view
@@ -49,7 +46,8 @@ new class extends BaseComponent
 
         // Load tenants for tenant selection if super admin
         if (auth()->user()->isSuperAdmin()) {
-            $this->tenants = Tenant::where('status', CommonStatusEnum::ACTIVE)->get();
+            // Get all active tenants
+            $this->fetchAllActiveTenants();
         }
     }
 
@@ -70,6 +68,12 @@ new class extends BaseComponent
 
         if (! auth()->user()->isSuperAdmin()) {
             $model->where('room_types.tenant_id', auth()->user()->tenant?->tenant_id);
+        } else {
+            $model = $this->applyFilterTenantDateRange(
+                model: $model,
+                tenantField: 'room_types.tenant_id',
+                dateField: 'room_types.created_at',
+            );
         }
 
         $data = $this->getDataWithFilter(

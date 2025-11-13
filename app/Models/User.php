@@ -95,4 +95,11 @@ class User extends Authenticatable
     {
         return $this->hasRole('hotel_receptionist');
     }
+
+    #[Scope]
+    protected function isHotelStaff() : bool
+    {
+        return str()->of($this->roles->pluck('name')->join(','))
+            ->contains(['hotel_admin', 'hotel_receptionist']);
+    }
 }

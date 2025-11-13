@@ -4,14 +4,14 @@ use App\Enums\CommonStatusEnum;
 use App\Livewire\BaseComponent;
 use App\Models\Tenant\Content\Content;
 use App\Models\Tenant\Content\ContentItem;
-use App\Models\Tenant\Tenant;
+use App\Traits\WithFilterTenantDateRange;
 use App\Traits\WithMediaCollection;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 
 new class extends BaseComponent
 {
-    use WithFileUploads, WithMediaCollection;
+    use WithFileUploads, WithMediaCollection, WithFilterTenantDateRange;
 
     // Model instance
     public $modelInstance = ContentItem::class;
@@ -44,8 +44,6 @@ new class extends BaseComponent
         ],
     ];
 
-    public $tenants = [];
-
     public $contents = [];
 
     public function mount()
@@ -60,7 +58,8 @@ new class extends BaseComponent
 
         // Load tenants for tenant selection if super admin
         if (auth()->user()->isSuperAdmin()) {
-            $this->tenants = Tenant::where('status', CommonStatusEnum::ACTIVE)->get();
+            // Get all active tenants
+            $this->fetchAllActiveTenants();
         }
     }
 
@@ -92,6 +91,12 @@ new class extends BaseComponent
 
         if (! auth()->user()->isSuperAdmin()) {
             $model->where('content_items.tenant_id', auth()->user()->tenant?->tenant_id);
+        } else {
+            $model = $this->applyFilterTenantDateRange(
+                model: $model,
+                tenantField: 'content_items.tenant_id',
+                dateField: 'content_items.created_at',
+            );
         }
 
         $data = $this->getDataWithFilter(

@@ -1,13 +1,14 @@
 <?php
 
-use App\Enums\CommonStatusEnum;
 use App\Livewire\BaseComponent;
 use App\Models\Tenant\Room;
 use App\Models\Tenant\RoomType;
-use App\Models\Tenant\Tenant;
+use App\Traits\WithFilterTenantDateRange;
 
 new class extends BaseComponent
 {
+    use WithFilterTenantDateRange;
+
     // Model instance
     public $modelInstance = Room::class;
 
@@ -43,8 +44,6 @@ new class extends BaseComponent
         ],
     ];
 
-    public $tenants = [];
-
     public $roomTypes = [];
 
     public function mount()
@@ -59,7 +58,8 @@ new class extends BaseComponent
 
         // Load tenants for tenant selection if super admin
         if (auth()->user()->isSuperAdmin()) {
-            $this->tenants = Tenant::where('status', CommonStatusEnum::ACTIVE)->get();
+            // Get all active tenants
+            $this->fetchAllActiveTenants();
         }
     }
 
@@ -90,6 +90,12 @@ new class extends BaseComponent
 
         if (! auth()->user()->isSuperAdmin()) {
             $model->where('rooms.tenant_id', auth()->user()->tenant?->tenant_id);
+        } else {
+            $model = $this->applyFilterTenantDateRange(
+                model: $model,
+                tenantField: 'rooms.tenant_id',
+                dateField: 'rooms.created_at',
+            );
         }
 
         $data = $this->getDataWithFilter(
@@ -131,7 +137,7 @@ new class extends BaseComponent
             return;
         }
 
-        $record = RoomType::find($id);
+        $record = Room::find($id);
         $this->recordId = $record->id;
         $this->tenant_id = $record->tenant_id;
         $this->room_type_id = $record->room_type_id;
