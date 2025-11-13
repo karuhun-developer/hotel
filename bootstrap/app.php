@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->api('throttle:60,1');
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+            'auth.api-key' => \App\Http\Middleware\AuthApiKey::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

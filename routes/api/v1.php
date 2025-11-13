@@ -11,5 +11,10 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
     })->name('welcome');
 
     // Authentication Routes
-    require 'v1/auth.php';
+    // require 'v1/auth.php';
+
+    // Tenant Routes
+    Route::middleware('auth.api-key')->group(function () {
+        Route::get('/tenant', [App\Http\Controllers\Api\V1\TenantController::class, 'show'])->name('tenant.show');
+    });
 });

@@ -1,6 +1,6 @@
-# TODO
+# POSTMAN Collection
 
-1. Add laravel/pulse package to composer.json after livewire 4 is stable.
+https://www.postman.com/restless-comet-598061/workspace/hotel/collection/8500651-176f2ca3-6989-44d8-897b-b439e1882085?action=share&source=copy-link&creator=8500651
 
 # My Starter Template for Laravel
 

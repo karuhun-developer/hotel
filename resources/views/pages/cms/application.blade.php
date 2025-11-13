@@ -42,6 +42,6 @@ render(function (View $view) {
                 {{ $description }}
             </flux:text>
         </div>
-        <livewire:cms.tenant.application />
+        <livewire:cms.application />
     </div>
 </x-layouts.app>

@@ -71,7 +71,7 @@ class HotelAdminMenuSeeder extends Seeder
         Menu::create([
             'role_id' => $this->role->id,
             'name' => 'Applications',
-            'url' => 'cms.application.index',
+            'url' => 'cms.application',
             'icon' => 'device-phone-mobile',
             'order' => 4,
             'active_pattern' => 'cms.application',

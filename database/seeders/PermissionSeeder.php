@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Spatie\Permission;
 use App\Models\Spatie\Role;
+use App\Models\Tenant\Application;
 use App\Models\Tenant\Content\Content;
 use App\Models\Tenant\Content\ContentItem;
 use App\Models\Tenant\FrontDesk;
@@ -90,6 +91,12 @@ class PermissionSeeder extends Seeder
         'create'.RoomType::class,
         'update'.RoomType::class,
         'delete'.RoomType::class,
+        // Application permissions
+        'view'.Application::class,
+        'show'.Application::class,
+        'create'.Application::class,
+        'update'.Application::class,
+        'delete'.Application::class,
     ];
 
     // List hotel receptionist permissions
