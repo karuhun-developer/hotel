@@ -11,6 +11,7 @@ window.Toast = Swal.mixin({
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
+    topLayer: true,
     didOpen: (toast) => {
         toast.addEventListener("mouseenter", Swal.stopTimer);
         toast.addEventListener("mouseleave", Swal.resumeTimer);

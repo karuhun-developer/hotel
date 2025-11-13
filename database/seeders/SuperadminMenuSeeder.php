@@ -25,6 +25,7 @@ class SuperadminMenuSeeder extends Seeder
         $this->applicationMenu();
         $this->roomMenu();
         $this->contentMenu();
+        $this->m3uSourceMenu();
         $this->managementMenu();
         $this->apiKeyMenu();
     }
@@ -137,6 +138,19 @@ class SuperadminMenuSeeder extends Seeder
             'url' => 'cms.content.item',
             'order' => 2,
             'active_pattern' => 'cms.content.item',
+            'status' => 1,
+        ]);
+    }
+
+    public function m3uSourceMenu()
+    {
+        Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'M3U Sources',
+            'url' => 'cms.m3u.source',
+            'icon' => 'tv',
+            'order' => 10,
+            'active_pattern' => 'cms.m3u.source',
             'status' => 1,
         ]);
     }
