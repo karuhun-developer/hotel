@@ -1,36 +1,37 @@
 <?php
 
+use App\Models\Menu\Menu;
 use App\Models\Spatie\Role;
 use Illuminate\View\View;
 
 use function Laravel\Folio\name;
 use function Laravel\Folio\render;
 
-name('cms.management.role.permission');
+name('cms.management.menu.sub');
 
 // Page title and breadcrumbs
 render(function (View $view) {
-    $title = 'Management Role Permissions';
-    $description = 'Manage the application\'s management role permission items here.';
+    // Get menu
+    $menu = Menu::findOrFail(request()->get('menu_id'));
+
+    $title = 'Management Sub Menu - ' . $menu->name;
+    $description = 'Manage the application\'s management sub menu items for ' . $menu->name . '.';
     $breadcrumbs = [
         [
             'label' => 'Management',
             'url' => '#'
         ],
         [
-            'label' => 'Role',
-            'url' => route('cms.management.role')
+            'label' => 'Menu',
+            'url' => route('cms.management.menu')
         ],
         [
-            'label' => 'Permissions',
+            'label' => 'Sub Menu',
             'url' => null,
         ],
     ];
 
-    // Get role
-    $role = Role::findOrFail(request()->get('role_id'));
-
-    $view->with(compact('title', 'description', 'breadcrumbs', 'role'));
+    $view->with(compact('title', 'description', 'breadcrumbs', 'menu'));
 }); ?>
 
 <x-layouts.app :$title>
@@ -38,7 +39,7 @@ render(function (View $view) {
         <div class="flex justify-between items-center mb-5">
             <div class="flex items-center gap-4">
                 <flux:button
-                    href="{{ route('cms.management.role') }}"
+                    href="{{ route('cms.management.menu') }}"
                     size="sm"
                     variant="primary"
                     icon="arrow-left"
@@ -62,7 +63,7 @@ render(function (View $view) {
                 {{ $description }}
             </flux:text>
         </div>
-        <livewire:cms.management.role.permission :$role />
+        <livewire:cms.management.menu.sub :$menu />
     </div>
 </x-layouts.app>
 

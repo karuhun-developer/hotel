@@ -74,17 +74,6 @@
                         </x-ui.table.td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
-                                @if (auth()->user()->can('show' . $this->modelInstance))
-                                    <flux:button
-                                        size="sm"
-                                        variant="primary"
-                                        color="yellow"
-                                        icon="list-bullet"
-                                        href="{{ route('cms.management.menu.sub') }}?menu_id={{ $d->id }}"
-                                    >
-                                        Sub Menu
-                                    </flux:button>
-                                @endif
                                 @if (auth()->user()->can('update' . $this->modelInstance))
                                     <flux:button
                                         size="sm"
