@@ -22,6 +22,7 @@ class SuperadminMenuSeeder extends Seeder
         $this->dashboardMenu();
         $this->frontDeskMenu();
         $this->tenantMenu();
+        $this->applicationMenu();
         $this->roomMenu();
         $this->contentMenu();
         $this->managementMenu();
@@ -67,6 +68,19 @@ class SuperadminMenuSeeder extends Seeder
         ]);
     }
 
+    public function applicationMenu()
+    {
+        Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'Applications',
+            'url' => 'cms.application',
+            'icon' => 'device-phone-mobile',
+            'order' => 4,
+            'active_pattern' => 'cms.application',
+            'status' => 1,
+        ]);
+    }
+
     public function roomMenu()
     {
         $room = Menu::create([
@@ -74,7 +88,7 @@ class SuperadminMenuSeeder extends Seeder
             'name' => 'Rooms',
             'url' => '#',
             'icon' => 'door-open',
-            'order' => 4,
+            'order' => 5,
             'active_pattern' => 'cms.room',
             'status' => 1,
         ]);
@@ -104,7 +118,7 @@ class SuperadminMenuSeeder extends Seeder
             'name' => 'Contents',
             'url' => '#',
             'icon' => 'document-text',
-            'order' => 5,
+            'order' => 6,
             'active_pattern' => 'cms.content',
             'status' => 1,
         ]);

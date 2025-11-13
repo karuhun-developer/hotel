@@ -21,6 +21,7 @@ class HotelAdminMenuSeeder extends Seeder
         $this->dashboardMenu();
         $this->frontDeskMenu();
         $this->tenantMenu();
+        $this->applicationMenu();
         $this->roomMenu();
         $this->contentMenu();
         $this->apiKeyMenu();
@@ -65,6 +66,19 @@ class HotelAdminMenuSeeder extends Seeder
         ]);
     }
 
+    public function applicationMenu()
+    {
+        Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'Applications',
+            'url' => 'cms.application.index',
+            'icon' => 'device-phone-mobile',
+            'order' => 4,
+            'active_pattern' => 'cms.application',
+            'status' => 1,
+        ]);
+    }
+
     public function roomMenu()
     {
         $room = Menu::create([
@@ -72,7 +86,7 @@ class HotelAdminMenuSeeder extends Seeder
             'name' => 'Rooms',
             'url' => '#',
             'icon' => 'door-open',
-            'order' => 4,
+            'order' => 5,
             'active_pattern' => 'cms.room',
             'status' => 1,
         ]);
@@ -102,7 +116,7 @@ class HotelAdminMenuSeeder extends Seeder
             'name' => 'Contents',
             'url' => '#',
             'icon' => 'document-text',
-            'order' => 5,
+            'order' => 6,
             'active_pattern' => 'cms.content',
             'status' => 1,
         ]);
