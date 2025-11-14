@@ -7,6 +7,8 @@ use App\Models\Spatie\Role;
 use App\Models\Tenant\Application;
 use App\Models\Tenant\Content\Content;
 use App\Models\Tenant\Content\ContentItem;
+use App\Models\Tenant\Food\Food;
+use App\Models\Tenant\Food\FoodCategory;
 use App\Models\Tenant\FrontDesk;
 use App\Models\Tenant\Room;
 use App\Models\Tenant\RoomType;
@@ -97,6 +99,18 @@ class PermissionSeeder extends Seeder
         'create'.Application::class,
         'update'.Application::class,
         'delete'.Application::class,
+        // Food permissions
+        'view'.FoodCategory::class,
+        'show'.FoodCategory::class,
+        'create'.FoodCategory::class,
+        'update'.FoodCategory::class,
+        'delete'.FoodCategory::class,
+        // Food Item permissions
+        'view'.Food::class,
+        'show'.Food::class,
+        'create'.Food::class,
+        'update'.Food::class,
+        'delete'.Food::class,
     ];
 
     // List hotel receptionist permissions
