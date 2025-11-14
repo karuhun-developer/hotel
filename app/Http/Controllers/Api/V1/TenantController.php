@@ -7,7 +7,8 @@ use App\Models\Tenant\Tenant;
 
 class TenantController extends Controller
 {
-    public function show() {
+    public function show()
+    {
         $model = Tenant::with('profile.media')->findOrFail(auth()->user()->tenant?->tenant_id);
 
         // If profile exists, load media

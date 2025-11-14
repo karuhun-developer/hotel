@@ -140,7 +140,6 @@ class HotelAdminMenuSeeder extends Seeder
         ]);
     }
 
-
     public function foodMenu()
     {
         $food = Menu::create([

@@ -11,7 +11,7 @@ use Livewire\WithFileUploads;
 
 new class extends BaseComponent
 {
-    use WithFileUploads, WithMediaCollection, WithFilterTenantDateRange;
+    use WithFileUploads, WithFilterTenantDateRange, WithMediaCollection;
 
     // Model instance
     public $modelInstance = ContentItem::class;

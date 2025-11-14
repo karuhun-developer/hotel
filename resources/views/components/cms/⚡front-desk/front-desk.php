@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\CommonStatusEnum;
 use App\Livewire\BaseComponent;
 use App\Models\Tenant\FrontDesk;
 use App\Models\Tenant\Room;
@@ -132,7 +131,8 @@ new class extends BaseComponent
 
     public $is_birthday;
 
-    public function checkIn($id) {
+    public function checkIn($id)
+    {
         $record = Room::find($id);
 
         $this->roomData = $record;
@@ -146,7 +146,8 @@ new class extends BaseComponent
     }
 
     #[On('checkOut')]
-    public function checkOut($id) {
+    public function checkOut($id)
+    {
         $record = Room::find($id);
         $record->guest_name = null;
         $record->is_birthday = false;

@@ -10,7 +10,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class M3uChannel extends Model implements HasMedia
 {
-    use LogsActivity, InteractsWithMedia;
+    use InteractsWithMedia, LogsActivity;
 
     protected $fillable = [
         'm3u_source_id',

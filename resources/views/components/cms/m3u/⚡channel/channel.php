@@ -122,7 +122,8 @@ new class extends BaseComponent
     }
 
     // Call API
-    public function callApi() {
+    public function callApi()
+    {
         try {
             // Call Api
             $ch = curl_init();
@@ -137,11 +138,11 @@ new class extends BaseComponent
 
             // Headers
             $headers = $this->m3uSource->headers;
-            if(!empty($headers)) {
+            if (! empty($headers)) {
                 $headers = json_decode($headers, true);
                 $fix_headers = [];
                 foreach ($headers as $key => $value) {
-                    $fix_headers[] = $key . ': ' . $value;
+                    $fix_headers[] = $key.': '.$value;
                 }
 
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $fix_headers);
@@ -149,7 +150,7 @@ new class extends BaseComponent
 
             // Body
             $body = $this->m3uSource->body;
-            if(!empty($body)) {
+            if (! empty($body)) {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
             }
 
@@ -165,16 +166,16 @@ new class extends BaseComponent
             for ($i = 0; $i < $count; $i++) {
                 $item = $match[0][$i];
 
-                if (!empty($match['tag'][$i])) {
-                    //is a tag increment the result index
-                    ++$index;
-                } elseif (!empty($match['prop_key'][$i])) {
-                    //is a prop - split item
+                if (! empty($match['tag'][$i])) {
+                    // is a tag increment the result index
+                    $index++;
+                } elseif (! empty($match['prop_key'][$i])) {
+                    // is a prop - split item
                     $result[$index][$match['prop_key'][$i]] = $match['prop_val'][$i];
-                } elseif (!empty($match['something'][$i])) {
-                    //is a prop - split item
+                } elseif (! empty($match['something'][$i])) {
+                    // is a prop - split item
                     $result[$index]['name'] = str_replace(',', '', $item);
-                } elseif (!empty($match['url'][$i])) {
+                } elseif (! empty($match['url'][$i])) {
                     $result[$index]['url'] = $item;
                 }
             }
@@ -192,7 +193,7 @@ new class extends BaseComponent
 
             $this->dispatch('toast', type: 'success', message: 'API call successful and data saved.');
         } catch (\Exception $e) {
-            $this->dispatch('toast', type: 'error', message: 'API call failed: ' . $e->getMessage());
+            $this->dispatch('toast', type: 'error', message: 'API call failed: '.$e->getMessage());
         }
     }
 };

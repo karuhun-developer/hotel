@@ -30,7 +30,7 @@ new class extends BaseComponent
         [
             'name' => 'Created At',
             'field' => 'created_at',
-        ]
+        ],
     ];
 
     public function mount()
