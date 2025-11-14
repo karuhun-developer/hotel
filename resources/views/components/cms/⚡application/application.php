@@ -144,7 +144,7 @@ new class extends BaseComponent
             'name' => 'required|string|max:255',
             'package_name' => 'nullable|string',
             // Max 50MB
-            'image' => 'nullable|image|max:51200',
+            'image' => 'nullable|image:allow_svg|max:51200',
         ]);
 
         $model = $this->save();
