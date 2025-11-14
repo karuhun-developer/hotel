@@ -2,8 +2,7 @@
 
 use App\Enums\CommonStatusEnum;
 use App\Livewire\BaseComponent;
-use App\Models\Tenant\Content\Content;
-use App\Models\Tenant\Content\ContentItem;
+use App\Models\Tenant\Food\FoodCategory;
 use App\Traits\WithFilterTenantDateRange;
 use App\Traits\WithMediaCollection;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -14,7 +13,7 @@ new class extends BaseComponent
     use WithFileUploads, WithMediaCollection, WithFilterTenantDateRange;
 
     // Model instance
-    public $modelInstance = ContentItem::class;
+    public $modelInstance = FoodCategory::class;
 
     // Pagination and Search
     public $searchBy = [
@@ -23,28 +22,22 @@ new class extends BaseComponent
             'field' => 'tenants.name',
         ],
         [
-            'name' => 'Content',
-            'field' => 'contents.name',
-        ],
-        [
-            'name' => 'Item',
-            'field' => 'content_items.name',
+            'name' => 'Name',
+            'field' => 'food_categories.name',
         ],
         [
             'name' => 'Description',
-            'field' => 'content_items.description',
+            'field' => 'food_categories.description',
         ],
         [
             'name' => 'Status',
-            'field' => 'content_items.status',
+            'field' => 'food_categories.status',
         ],
         [
             'name' => 'Created At',
-            'field' => 'content_items.created_at',
+            'field' => 'food_categories.created_at',
         ],
     ];
-
-    public $contents = [];
 
     public function mount()
     {
@@ -54,22 +47,12 @@ new class extends BaseComponent
         }
 
         // Set default order by
-        $this->paginationOrderBy = 'content_items.created_at';
+        $this->paginationOrderBy = 'food_categories.created_at';
 
         // Load tenants for tenant selection if super admin
         if (auth()->user()->isSuperAdmin()) {
             // Get all active tenants
             $this->fetchAllActiveTenants();
-        }
-    }
-
-    public function getContents()
-    {
-        if ($this->tenant_id) {
-            $this->contents = Content::query()
-                ->where('tenant_id', $this->tenant_id)
-                ->where('status', CommonStatusEnum::ACTIVE)
-                ->get();
         }
     }
 
@@ -80,22 +63,21 @@ new class extends BaseComponent
         }
 
         // Query data with filters
-        $model = ContentItem::query()
-            ->join('tenants', 'tenants.id', '=', 'content_items.tenant_id')
-            ->join('contents', 'contents.id', '=', 'content_items.content_id')
+        $model = FoodCategory::query()
+            ->join('tenants', 'tenants.id', '=', 'food_categories.tenant_id')
             ->select(
-                'content_items.*',
-                'contents.name as content_name',
+                'food_categories.*',
                 'tenants.name as tenant_name',
-            );
+            )
+            ->with('media');
 
         if (! auth()->user()->isSuperAdmin()) {
-            $model->where('content_items.tenant_id', auth()->user()->tenant?->tenant_id);
+            $model->where('food_categories.tenant_id', auth()->user()->tenant?->tenant_id);
         } else {
             $model = $this->applyFilterTenantDateRange(
                 model: $model,
-                tenantField: 'content_items.tenant_id',
-                dateField: 'content_items.created_at',
+                tenantField: 'food_categories.tenant_id',
+                dateField: 'food_categories.created_at',
             );
         }
 
@@ -120,8 +102,6 @@ new class extends BaseComponent
 
     public $tenant_id;
 
-    public $content_id;
-
     public $name;
 
     public $description;
@@ -140,20 +120,13 @@ new class extends BaseComponent
             return;
         }
 
-        $record = ContentItem::find($id);
+        $record = FoodCategory::find($id);
         $this->oldData = $record;
         $this->recordId = $record->id;
         $this->tenant_id = $record->tenant_id;
-        $this->content_id = $record->content_id;
         $this->name = $record->name;
         $this->description = $record->description;
         $this->status = $record->status->value;
-
-        // Get contents for the tenant
-        $this->getContents();
-
-        // Set content_id value in the frontend
-        $this->dispatch('setValueById', id: 'content_id', value: $this->content_id);
     }
 
     // Reset record data
@@ -163,7 +136,6 @@ new class extends BaseComponent
             'recordId',
             'oldData',
             'tenant_id',
-            'content_id',
             'name',
             'description',
             'status',
@@ -172,9 +144,6 @@ new class extends BaseComponent
 
         $this->tenant_id = auth()->user()->tenant?->tenant_id;
         $this->status = CommonStatusEnum::ACTIVE->value;
-
-        // Get contents for the tenant
-        $this->getContents();
     }
 
     // Handle form submit
@@ -182,7 +151,6 @@ new class extends BaseComponent
     {
         $this->validate([
             'tenant_id' => 'required|exists:tenants,id',
-            'content_id' => 'required|exists:contents,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status' => 'required|in:'.implode(',', CommonStatusEnum::toArray()),
@@ -199,12 +167,6 @@ new class extends BaseComponent
                 file: $this->image,
                 collection: 'image',
             );
-        }
-
-        // + the version number on each update
-        if ($this->recordId) {
-            $model->version = ContentItem::max('version') + 1;
-            $model->save();
         }
 
         $this->resetRecordData();

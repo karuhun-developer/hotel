@@ -2,8 +2,8 @@
 
 use App\Enums\CommonStatusEnum;
 use App\Livewire\BaseComponent;
-use App\Models\Tenant\Content\Content;
-use App\Models\Tenant\Content\ContentItem;
+use App\Models\Tenant\Food\Food;
+use App\Models\Tenant\Food\FoodCategory;
 use App\Traits\WithFilterTenantDateRange;
 use App\Traits\WithMediaCollection;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -14,7 +14,7 @@ new class extends BaseComponent
     use WithFileUploads, WithMediaCollection, WithFilterTenantDateRange;
 
     // Model instance
-    public $modelInstance = ContentItem::class;
+    public $modelInstance = Food::class;
 
     // Pagination and Search
     public $searchBy = [
@@ -23,28 +23,32 @@ new class extends BaseComponent
             'field' => 'tenants.name',
         ],
         [
-            'name' => 'Content',
-            'field' => 'contents.name',
+            'name' => 'Food Category',
+            'field' => 'food_categories.name',
         ],
         [
-            'name' => 'Item',
-            'field' => 'content_items.name',
+            'name' => 'Name',
+            'field' => 'food.name',
+        ],
+        [
+            'name' => 'Price',
+            'field' => 'food.price',
         ],
         [
             'name' => 'Description',
-            'field' => 'content_items.description',
+            'field' => 'food.description',
         ],
         [
             'name' => 'Status',
-            'field' => 'content_items.status',
+            'field' => 'food.status',
         ],
         [
             'name' => 'Created At',
-            'field' => 'content_items.created_at',
+            'field' => 'food.created_at',
         ],
     ];
 
-    public $contents = [];
+    public $foodCategories = [];
 
     public function mount()
     {
@@ -54,7 +58,7 @@ new class extends BaseComponent
         }
 
         // Set default order by
-        $this->paginationOrderBy = 'content_items.created_at';
+        $this->paginationOrderBy = 'food.created_at';
 
         // Load tenants for tenant selection if super admin
         if (auth()->user()->isSuperAdmin()) {
@@ -63,12 +67,12 @@ new class extends BaseComponent
         }
     }
 
-    public function getContents()
+    public function getFoodCategories()
     {
         if ($this->tenant_id) {
-            $this->contents = Content::query()
-                ->where('tenant_id', $this->tenant_id)
+            $this->foodCategories = FoodCategory::where('tenant_id', $this->tenant_id)
                 ->where('status', CommonStatusEnum::ACTIVE)
+                ->orderBy('name')
                 ->get();
         }
     }
@@ -80,22 +84,22 @@ new class extends BaseComponent
         }
 
         // Query data with filters
-        $model = ContentItem::query()
-            ->join('tenants', 'tenants.id', '=', 'content_items.tenant_id')
-            ->join('contents', 'contents.id', '=', 'content_items.content_id')
+        $model = Food::query()
+            ->join('tenants', 'food.tenant_id', '=', 'tenants.id')
+            ->join('food_categories', 'food.food_category_id', '=', 'food_categories.id')
             ->select(
-                'content_items.*',
-                'contents.name as content_name',
+                'food.*',
                 'tenants.name as tenant_name',
+                'food_categories.name as food_category_name',
             );
 
         if (! auth()->user()->isSuperAdmin()) {
-            $model->where('content_items.tenant_id', auth()->user()->tenant?->tenant_id);
+            $model->where('food.tenant_id', auth()->user()->tenant?->tenant_id);
         } else {
             $model = $this->applyFilterTenantDateRange(
                 model: $model,
-                tenantField: 'content_items.tenant_id',
-                dateField: 'content_items.created_at',
+                tenantField: 'food.tenant_id',
+                dateField: 'food.created_at',
             );
         }
 
@@ -120,9 +124,11 @@ new class extends BaseComponent
 
     public $tenant_id;
 
-    public $content_id;
+    public $food_category_id;
 
     public $name;
+
+    public $price;
 
     public $description;
 
@@ -140,20 +146,21 @@ new class extends BaseComponent
             return;
         }
 
-        $record = ContentItem::find($id);
+        $record = Food::find($id);
         $this->oldData = $record;
         $this->recordId = $record->id;
         $this->tenant_id = $record->tenant_id;
-        $this->content_id = $record->content_id;
+        $this->food_category_id = $record->food_category_id;
         $this->name = $record->name;
+        $this->price = numberToCurrency($record->price);
         $this->description = $record->description;
         $this->status = $record->status->value;
 
         // Get contents for the tenant
-        $this->getContents();
+        $this->getFoodCategories();
 
         // Set content_id value in the frontend
-        $this->dispatch('setValueById', id: 'content_id', value: $this->content_id);
+        $this->dispatch('setValueById', id: 'food_category_id', value: $this->food_category_id);
     }
 
     // Reset record data
@@ -163,27 +170,31 @@ new class extends BaseComponent
             'recordId',
             'oldData',
             'tenant_id',
-            'content_id',
+            'food_category_id',
             'name',
+            'price',
             'description',
             'status',
-            'image',
         ]);
 
         $this->tenant_id = auth()->user()->tenant?->tenant_id;
+        $this->price = 0;
         $this->status = CommonStatusEnum::ACTIVE->value;
 
         // Get contents for the tenant
-        $this->getContents();
+        $this->getFoodCategories();
     }
 
     // Handle form submit
     public function submit()
     {
+        $this->price = currencyToNumber($this->price);
+
         $this->validate([
             'tenant_id' => 'required|exists:tenants,id',
-            'content_id' => 'required|exists:contents,id',
+            'food_category_id' => 'required|exists:food_categories,id',
             'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'status' => 'required|in:'.implode(',', CommonStatusEnum::toArray()),
             // Max 50MB
@@ -199,12 +210,6 @@ new class extends BaseComponent
                 file: $this->image,
                 collection: 'image',
             );
-        }
-
-        // + the version number on each update
-        if ($this->recordId) {
-            $model->version = ContentItem::max('version') + 1;
-            $model->save();
         }
 
         $this->resetRecordData();

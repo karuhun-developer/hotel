@@ -25,6 +25,7 @@ class SuperadminMenuSeeder extends Seeder
         $this->applicationMenu();
         $this->roomMenu();
         $this->contentMenu();
+        $this->foodMenu();
         $this->m3uSourceMenu();
         $this->managementMenu();
         $this->apiKeyMenu();
@@ -138,6 +139,36 @@ class SuperadminMenuSeeder extends Seeder
             'url' => 'cms.content.item',
             'order' => 2,
             'active_pattern' => 'cms.content.item',
+            'status' => 1,
+        ]);
+    }
+
+    public function foodMenu()
+    {
+        $food = Menu::create([
+            'role_id' => $this->role->id,
+            'name' => 'Food',
+            'url' => '#',
+            'icon' => 'gift',
+            'order' => 7,
+            'active_pattern' => 'cms.food',
+            'status' => 1,
+        ]);
+
+        $food->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Food Categories',
+            'url' => 'cms.food.food-category',
+            'order' => 1,
+            'active_pattern' => 'cms.food.food-category',
+            'status' => 1,
+        ]);
+        $food->subMenu()->create([
+            'role_id' => $this->role->id,
+            'name' => 'Food',
+            'url' => 'cms.food.food',
+            'order' => 2,
+            'active_pattern' => 'cms.food.food',
             'status' => 1,
         ]);
     }
