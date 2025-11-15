@@ -1,31 +1,49 @@
 <?php
 
+use App\Models\Tenant\Tenant;
 use Illuminate\View\View;
 
 use function Laravel\Folio\name;
 use function Laravel\Folio\render;
 
-name('cms.tenant.index');
+name('cms.tenant.channel');
 
 // Page title and breadcrumbs
 render(function (View $view) {
+    // Get tenant
+    $tenant = Tenant::findOrFail(request()->get('tenant_id'));
+
     // Page title and breadcrumbs
-    $title = 'Tenant Management';
-    $description = 'Manage the application\'s tenants here.';
+    $title = 'Enabled Channels for ' . $tenant->name;
+    $description = 'Manage the enabled channels for the tenant "' . $tenant->name . '". You can add or remove channels as needed to control where this tenant\'s content is available.';
+
     $breadcrumbs = [
         [
             'label' => 'Tenants',
-            'url' => '#'
+            'url' => route('cms.tenant.index')
         ],
+        [
+            'label' => 'Enabled Channels',
+            'url' => null
+        ]
     ];
 
-    $view->with(compact('title', 'description', 'breadcrumbs'));
+    $view->with(compact('title', 'description', 'breadcrumbs', 'tenant'));
 }); ?>
 
 <x-layouts.app :$title>
     <div class="w-full">
         <div class="flex justify-between items-center mb-5">
-            <h1 class="text-3xl font-bold">{{ $title }}</h1>
+            <div class="flex items-center gap-4">
+                <flux:button
+                    href="{{ route('cms.tenant.index') }}"
+                    size="sm"
+                    variant="primary"
+                    icon="arrow-left"
+
+                />
+                <h1 class="text-3xl font-bold">{{ $title }}</h1>
+            </div>
             <flux:breadcrumbs>
                 <flux:breadcrumbs.item href="{{ route('cms.dashboard') }}" icon="home" />
                 @foreach($breadcrumbs as $breadcrumb)
@@ -42,6 +60,6 @@ render(function (View $view) {
                 {{ $description }}
             </flux:text>
         </div>
-        <livewire:cms.tenant.tenant />
+        <livewire:cms.tenant.channel :$tenant />
     </div>
 </x-layouts.app>

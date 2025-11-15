@@ -6,18 +6,18 @@
                     <div class="lg:flex lg:items-center lg:justify-between">
                         <div class="mt-4 lg:mt-0 lg:ml-auto">
                             <div class="flex gap-2">
-                                <button class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
-                                        wire:click="checkAll"
-                                        wire:loading.attr="disabled">
-                                    <i class="fa fa-check mr-2"></i>
+                                <flux:button
+                                    variant="primary"
+                                    icon="check"
+                                    wire:click="checkAll">
                                     Check All
-                                </button>
-                                <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
-                                        wire:click="uncheckAll"
-                                        wire:loading.attr="disabled">
-                                    <i class="fa fa-x mr-2"></i>
+                                </flux:button>
+                                <flux:button
+                                    variant="danger"
+                                    icon="x-mark"
+                                    wire:click="uncheckAll">
                                     Uncheck All
-                                </button>
+                                </flux:button>
                             </div>
                         </div>
                     </div>

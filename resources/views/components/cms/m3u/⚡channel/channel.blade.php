@@ -161,16 +161,16 @@
         <form class="space-y-6" wire:submit.prevent="submit">
             <div>
                 <flux:heading size="lg">
-                    {{ $isUpdate ? 'Update' : 'Create' }} M3U Source Item
+                    {{ $isUpdate ? 'Update' : 'Create' }} M3U Channel
                 </flux:heading>
                 <flux:text class="mt-2">
-                    {{ $isUpdate ? 'Update the details of the M3U source item.' : 'Fill in the details to create a new M3U source item.' }}
+                    {{ $isUpdate ? 'Update the details of the M3U channel item.' : 'Fill in the details to create a new M3U channel item.' }}
                 </flux:text>
             </div>
 
             <flux:field>
                 <flux:label>Name</flux:label>
-                <flux:text>The m3u source name.</flux:text>
+                <flux:text>The m3u channel name.</flux:text>
                 <flux:input wire:model="alias" type="text" />
                 <flux:error name="alias" />
             </flux:field>
