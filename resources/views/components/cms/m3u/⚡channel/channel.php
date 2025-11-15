@@ -4,10 +4,15 @@ use App\Enums\CommonStatusEnum;
 use App\Livewire\BaseComponent;
 use App\Models\M3u\M3uChannel;
 use App\Models\M3u\M3uSource;
+use App\Traits\WithMediaCollection;
 use Livewire\Attributes\On;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 
 new class extends BaseComponent
 {
+    use WithFileUploads, WithMediaCollection;
+
     // Model instance
     public $modelInstance = M3uChannel::class;
 
@@ -67,7 +72,11 @@ new class extends BaseComponent
     // Record data
     public $recordId;
 
+    public $oldData;
+
     public $alias;
+
+    public $image;
 
     public $status;
 
@@ -83,6 +92,7 @@ new class extends BaseComponent
 
         $record = M3uChannel::find($id);
         $this->recordId = $record->id;
+        $this->oldData = $record;
         $this->alias = $record->alias ? $record->alias : $record->name;
         $this->status = $record->status->value;
     }
@@ -92,7 +102,9 @@ new class extends BaseComponent
     {
         $this->reset([
             'recordId',
+            'oldData',
             'alias',
+            'image',
             'status',
         ]);
 
@@ -105,9 +117,22 @@ new class extends BaseComponent
         $this->validate([
             'alias' => 'nullable|string|max:255',
             'status' => 'required|in:'.implode(',', CommonStatusEnum::toArray()),
+            // Max 50MB
+            'image' => 'nullable|image:allow_svg|max:51200',
         ]);
 
-        $this->save();
+        $model = $this->save();
+
+        // Handle image upload
+        if ($this->image instanceof TemporaryUploadedFile) {
+            $this->saveFile(
+                model: $model,
+                file: $this->image,
+                collection: 'image',
+            );
+        }
+
+        $this->resetRecordData();
     }
 
     // Toggle status

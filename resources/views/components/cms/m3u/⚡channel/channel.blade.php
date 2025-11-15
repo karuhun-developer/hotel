@@ -176,6 +176,14 @@
             </flux:field>
 
             <flux:field>
+                <flux:label>Image</flux:label>
+                <flux:text>Max size 50MB.</flux:text>
+                <x-file-preview :file="$image" :form_file="$oldData?->getFirstMediaUrl('image')" />
+                <x-file-upload model="image" accept="image/*" />
+                <flux:error name="image" />
+            </flux:field>
+
+            <flux:field>
                 <flux:label>Status</flux:label>
                 <flux:text>Select the status of the m3u source.</flux:text>
                 <flux:select wire:model="status">
