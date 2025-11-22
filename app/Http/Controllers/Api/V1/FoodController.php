@@ -21,6 +21,12 @@ class FoodController extends Controller
                 $query->where('status', $request->status);
             });
 
+        if ($request->has('ids')) {
+            $ids = is_string($request->ids) ? explode(',', $request->ids) : $request->ids;
+
+            $model->whereIn('id', $ids);
+        }
+
         $model = $this->getDataWithFilter(
             model: $model,
             searchBy: [
@@ -61,6 +67,12 @@ class FoodController extends Controller
             ->when($request->has('food_category_id'), function ($query) use ($request) {
                 $query->where('food_category_id', $request->food_category_id);
             });
+
+        if ($request->has('ids')) {
+            $ids = is_string($request->ids) ? explode(',', $request->ids) : $request->ids;
+
+            $model->whereIn('id', $ids);
+        }
 
         $model = $this->getDataWithFilter(
             model: $model,
