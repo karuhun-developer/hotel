@@ -33,7 +33,7 @@ class FoodController extends Controller
                 'name',
                 'description',
             ],
-            orderBy: $request?->orderBy ?? 'package_name',
+            orderBy: $request?->orderBy ?? 'created_at',
             order: $request?->order ?? 'asc',
             paginate: $request?->paginate ?? 10,
             searchBySpecific: $request?->searchBySpecific ?? '',
@@ -52,6 +52,35 @@ class FoodController extends Controller
     {
         // Load image
         $model->image = $model->getFirstMediaUrl('image');
+
+        return $this->responseWithSuccess($model);
+    }
+
+    public function categoryChangeList(Request $request)
+    {
+        $model = FoodCategory::query()
+            ->with('media')
+            ->withTrashed()
+            ->where('tenant_id', auth()->user()->tenant?->tenant_id)
+            ->where('version', '>', $request->after ?? 0);
+
+        $model = $this->getDataWithFilter(
+            model: $model,
+            searchBy: [
+                'name',
+                'description',
+            ],
+            orderBy: $request?->orderBy ?? 'created_at',
+            order: $request?->order ?? 'asc',
+            paginate: $request?->paginate ?? 10,
+            searchBySpecific: $request?->searchBySpecific ?? '',
+            s: $request?->search ?? '',
+        );
+
+        // Load images
+        $model->each(function ($item) {
+            $item->image = $item->getFirstMediaUrl('image');
+        });
 
         return $this->responseWithSuccess($model);
     }
@@ -81,7 +110,7 @@ class FoodController extends Controller
                 'price',
                 'description',
             ],
-            orderBy: $request?->orderBy ?? 'package_name',
+            orderBy: $request?->orderBy ?? 'created_at',
             order: $request?->order ?? 'asc',
             paginate: $request?->paginate ?? 10,
             searchBySpecific: $request?->searchBySpecific ?? '',
@@ -100,6 +129,36 @@ class FoodController extends Controller
     {
         // Load image
         $model->image = $model->getFirstMediaUrl('image');
+
+        return $this->responseWithSuccess($model);
+    }
+
+    public function itemChangeList(Request $request)
+    {
+        $model = Food::query()
+            ->with('media')
+            ->withTrashed()
+            ->where('tenant_id', auth()->user()->tenant?->tenant_id)
+            ->where('version', '>', $request->after ?? 0);
+
+        $model = $this->getDataWithFilter(
+            model: $model,
+            searchBy: [
+                'name',
+                'price',
+                'description',
+            ],
+            orderBy: $request?->orderBy ?? 'created_at',
+            order: $request?->order ?? 'asc',
+            paginate: $request?->paginate ?? 10,
+            searchBySpecific: $request?->searchBySpecific ?? '',
+            s: $request?->search ?? '',
+        );
+
+        // Load images
+        $model->each(function ($item) {
+            $item->image = $item->getFirstMediaUrl('image');
+        });
 
         return $this->responseWithSuccess($model);
     }

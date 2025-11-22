@@ -169,6 +169,10 @@ new class extends BaseComponent
             );
         }
 
+        // + the version number on each action
+        $model->version = FoodCategory::max('version') + 1;
+        $model->save();
+
         $this->resetRecordData();
     }
 };

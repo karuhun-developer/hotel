@@ -43,4 +43,33 @@ class ApplicationController extends Controller
 
         return $this->responseWithSuccess($model);
     }
+
+    public function changeList(Request $request)
+    {
+        $model = Application::query()
+            ->with('media')
+            ->withTrashed()
+            ->where('tenant_id', auth()->user()->tenant?->tenant_id)
+            ->where('version', '>', $request->after ?? 0);
+
+        $model = $this->getDataWithFilter(
+            model: $model,
+            searchBy: [
+                'name',
+                'package_name',
+            ],
+            orderBy: $request?->orderBy ?? 'package_name',
+            order: $request?->order ?? 'asc',
+            paginate: $request?->paginate ?? 10,
+            searchBySpecific: $request?->searchBySpecific ?? '',
+            s: $request?->search ?? '',
+        );
+
+        // Load images
+        $model->each(function ($item) {
+            $item->image = $item->getFirstMediaUrl('image');
+        });
+
+        return $this->responseWithSuccess($model);
+    }
 }

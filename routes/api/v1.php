@@ -26,12 +26,15 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
 
         // Application Routes
         Route::get('/applications', [App\Http\Controllers\Api\V1\ApplicationController::class, 'index'])->name('applications');
+        Route::get('/changelist/applications', [App\Http\Controllers\Api\V1\ApplicationController::class, 'changeList'])->name('changelist.applications');
 
         // Food Routes
         Route::get('/foods/categories', [App\Http\Controllers\Api\V1\FoodController::class, 'categories'])->name('foods.categories');
         Route::get('/foods/categories/{model}', [App\Http\Controllers\Api\V1\FoodController::class, 'categoryShow'])->name('foods.categories.show');
+        Route::get('/changelist/foods/categories', [App\Http\Controllers\Api\V1\FoodController::class, 'categoryChangeList'])->name('changelist.foods.items');
         Route::get('/foods/items', [App\Http\Controllers\Api\V1\FoodController::class, 'items'])->name('foods.items');
         Route::get('/foods/items/{model}', [App\Http\Controllers\Api\V1\FoodController::class, 'itemShow'])->name('foods.items.show');
+        Route::get('/changelist/foods/items', [App\Http\Controllers\Api\V1\FoodController::class, 'itemChangeList'])->name('changelist.foods.items');
 
         // Room Routes
         Route::get('/rooms/types', [App\Http\Controllers\Api\V1\RoomController::class, 'types'])->name('rooms.types');

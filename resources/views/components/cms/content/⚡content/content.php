@@ -164,11 +164,9 @@ new class extends BaseComponent
             );
         }
 
-        // + the version number on each update
-        if ($this->recordId) {
-            $model->version = Content::max('version') + 1;
-            $model->save();
-        }
+        // + the version number on each action
+        $model->version = Content::max('version') + 1;
+        $model->save();
 
         $this->resetRecordData();
     }

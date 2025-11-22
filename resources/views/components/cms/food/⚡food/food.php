@@ -212,6 +212,10 @@ new class extends BaseComponent
             );
         }
 
+        // + the version number on each action
+        $model->version = Food::max('version') + 1;
+        $model->save();
+
         $this->resetRecordData();
     }
 };

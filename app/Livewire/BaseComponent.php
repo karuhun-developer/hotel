@@ -82,11 +82,21 @@ abstract class BaseComponent extends Component
 
         // Delete record
         try {
-            // TODO : I DON'T KNOW WHY ERROR (Class name must be a valid object or a string )
-            // $record = $modelClass->find($id);
-            // $record->delete();
+            $record = $modelClass->find($id);
 
-            \Illuminate\Support\Facades\DB::delete('delete from '.$modelClass->getTable().' where id = ?', [$id]);
+            // Check if table has version column
+            $hasVersionColumn = \Schema::hasColumn($modelClass->getTable(), 'version');
+            if ($hasVersionColumn) {
+                // Get the biggest version number
+                $bigestVersion = $modelClass::max('version');
+                $bigestVersion++;
+
+                // + the version number on each delete
+                $record->version = $bigestVersion;
+                $record->save();
+            }
+
+            $record->delete();
 
             $this->dispatch('toast', type: 'success', message: 'Record deleted successfully.');
         } catch (\Exception $e) {

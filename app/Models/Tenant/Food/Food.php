@@ -3,6 +3,7 @@
 namespace App\Models\Tenant\Food;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -10,7 +11,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Food extends Model implements HasMedia
 {
-    use InteractsWithMedia, LogsActivity;
+    use InteractsWithMedia, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'tenant_id',
@@ -18,6 +19,7 @@ class Food extends Model implements HasMedia
         'name',
         'price',
         'description',
+        'version',
         'status',
     ];
 
