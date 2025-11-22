@@ -150,7 +150,7 @@ new class extends BaseComponent
             'name' => 'required|string|max:255',
             'status' => 'required|in:'.implode(',', CommonStatusEnum::toArray()),
             // Max 50MB
-            'image' => 'nullable|image|max:51200',
+            'image' => 'nullable|image:allow_svg|max:51200',
         ]);
 
         $model = $this->save();

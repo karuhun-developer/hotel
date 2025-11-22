@@ -266,11 +266,11 @@ new class extends BaseComponent
             'description' => 'nullable|string|max:2000',
             'welcome_text' => 'nullable|string|max:2000',
             // Max 50MB for images and videos
-            'logo_color' => 'nullable|image|max:51200',
-            'logo_white' => 'nullable|image|max:51200',
-            'logo_black' => 'nullable|image|max:51200',
-            'main_photo' => 'nullable|image|max:51200',
-            'background_photo' => 'nullable|image|max:51200',
+            'logo_color' => 'nullable|image:allow_svg|max:51200',
+            'logo_white' => 'nullable|image:allow_svg|max:51200',
+            'logo_black' => 'nullable|image:allow_svg|max:51200',
+            'main_photo' => 'nullable|image:allow_svg|max:51200',
+            'background_photo' => 'nullable|image:allow_svg|max:51200',
             'intro_video' => 'nullable|file|mimes:mp4,ogx,oga,ogv,ogg,webm,mkv|max:51200',
         ]);
 
