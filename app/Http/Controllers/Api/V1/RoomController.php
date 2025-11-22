@@ -79,8 +79,10 @@ class RoomController extends Controller
         return $this->responseWithSuccess($model);
     }
 
-    public function itemShow(Room $model)
+    public function itemShow($no)
     {
+        $model = Room::where('tenant_id', auth()->user()->tenant?->tenant_id)->where('no', $no)->firstOrFail();
+
         return $this->responseWithSuccess($model);
     }
 }

@@ -37,7 +37,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
         Route::get('/rooms/types', [App\Http\Controllers\Api\V1\RoomController::class, 'types'])->name('rooms.types');
         Route::get('/rooms/types/{model}', [App\Http\Controllers\Api\V1\RoomController::class, 'typeShow'])->name('rooms.types.show');
         Route::get('/rooms/items', [App\Http\Controllers\Api\V1\RoomController::class, 'items'])->name('rooms.items');
-        Route::get('/rooms/items/{model}', [App\Http\Controllers\Api\V1\RoomController::class, 'itemShow'])->name('rooms.items.show');
+        Route::get('/rooms/items/{no}', [App\Http\Controllers\Api\V1\RoomController::class, 'itemShow'])->name('rooms.items.show');
 
         // M3UChannel Routes
         Route::get('/m3u-channels', [App\Http\Controllers\Api\V1\M3UChannelController::class, 'index'])->name('m3u-channels.index');
