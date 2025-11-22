@@ -47,16 +47,18 @@ class ApplicationController extends Controller
     public function changeList(Request $request)
     {
         $model = Application::query()
-            ->with('media')
             ->withTrashed()
             ->where('tenant_id', auth()->user()->tenant?->tenant_id)
-            ->where('version', '>', $request->after ?? 0);
+            ->where('version', '>', $request->after ?? 0)
+            ->select(
+                'id',
+                'version',
+                'deleted_at',
+            );
 
         $model = $this->getDataWithFilter(
             model: $model,
             searchBy: [
-                'name',
-                'package_name',
             ],
             orderBy: $request?->orderBy ?? 'package_name',
             order: $request?->order ?? 'asc',
@@ -64,11 +66,6 @@ class ApplicationController extends Controller
             searchBySpecific: $request?->searchBySpecific ?? '',
             s: $request?->search ?? '',
         );
-
-        // Load images
-        $model->each(function ($item) {
-            $item->image = $item->getFirstMediaUrl('image');
-        });
 
         return $this->responseWithSuccess($model);
     }

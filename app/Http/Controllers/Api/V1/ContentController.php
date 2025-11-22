@@ -51,15 +51,18 @@ class ContentController extends Controller
     public function contentsChangeList(Request $request)
     {
         $model = Content::query()
-            ->with('media')
             ->withTrashed()
             ->where('tenant_id', auth()->user()->tenant?->tenant_id)
-            ->where('version', '>', $request->after ?? 0);
+            ->where('version', '>', $request->after ?? 0)
+            ->select(
+                'id',
+                'version',
+                'deleted_at',
+            );
 
         $model = $this->getDataWithFilter(
             model: $model,
             searchBy: [
-                'name',
             ],
             orderBy: $request?->orderBy ?? 'id',
             order: $request?->order ?? 'asc',
@@ -67,11 +70,6 @@ class ContentController extends Controller
             searchBySpecific: $request?->searchBySpecific ?? '',
             s: $request?->search ?? '',
         );
-
-        // Load images
-        $model->each(function ($item) {
-            $item->image = $item->getFirstMediaUrl('image');
-        });
 
         return $this->responseWithSuccess($model);
     }
@@ -115,15 +113,18 @@ class ContentController extends Controller
     public function contentItemChangeList(Request $request)
     {
         $model = ContentItem::query()
-            ->with('media')
             ->withTrashed()
             ->where('tenant_id', auth()->user()->tenant?->tenant_id)
-            ->where('version', '>', $request->after ?? 0);
+            ->where('version', '>', $request->after ?? 0)
+            ->select(
+                'id',
+                'version',
+                'deleted_at',
+            );
 
         $model = $this->getDataWithFilter(
             model: $model,
             searchBy: [
-                'name',
             ],
             orderBy: $request?->orderBy ?? 'id',
             order: $request?->order ?? 'asc',
@@ -131,11 +132,6 @@ class ContentController extends Controller
             searchBySpecific: $request?->searchBySpecific ?? '',
             s: $request?->search ?? '',
         );
-
-        // Load images
-        $model->each(function ($item) {
-            $item->image = $item->getFirstMediaUrl('image');
-        });
 
         return $this->responseWithSuccess($model);
     }

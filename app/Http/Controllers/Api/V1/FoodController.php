@@ -59,16 +59,18 @@ class FoodController extends Controller
     public function categoryChangeList(Request $request)
     {
         $model = FoodCategory::query()
-            ->with('media')
             ->withTrashed()
             ->where('tenant_id', auth()->user()->tenant?->tenant_id)
-            ->where('version', '>', $request->after ?? 0);
+            ->where('version', '>', $request->after ?? 0)
+            ->select(
+                'id',
+                'version',
+                'deleted_at',
+            );
 
         $model = $this->getDataWithFilter(
             model: $model,
             searchBy: [
-                'name',
-                'description',
             ],
             orderBy: $request?->orderBy ?? 'created_at',
             order: $request?->order ?? 'asc',
@@ -76,11 +78,6 @@ class FoodController extends Controller
             searchBySpecific: $request?->searchBySpecific ?? '',
             s: $request?->search ?? '',
         );
-
-        // Load images
-        $model->each(function ($item) {
-            $item->image = $item->getFirstMediaUrl('image');
-        });
 
         return $this->responseWithSuccess($model);
     }
@@ -136,17 +133,18 @@ class FoodController extends Controller
     public function itemChangeList(Request $request)
     {
         $model = Food::query()
-            ->with('media')
             ->withTrashed()
             ->where('tenant_id', auth()->user()->tenant?->tenant_id)
-            ->where('version', '>', $request->after ?? 0);
+            ->where('version', '>', $request->after ?? 0)
+            ->select(
+                'id',
+                'version',
+                'deleted_at',
+            );
 
         $model = $this->getDataWithFilter(
             model: $model,
             searchBy: [
-                'name',
-                'price',
-                'description',
             ],
             orderBy: $request?->orderBy ?? 'created_at',
             order: $request?->order ?? 'asc',
@@ -154,11 +152,6 @@ class FoodController extends Controller
             searchBySpecific: $request?->searchBySpecific ?? '',
             s: $request?->search ?? '',
         );
-
-        // Load images
-        $model->each(function ($item) {
-            $item->image = $item->getFirstMediaUrl('image');
-        });
 
         return $this->responseWithSuccess($model);
     }
