@@ -66,9 +66,9 @@ class PermissionSeeder extends Seeder
         // Front Desk permissions
         'view'.FrontDesk::class,
         'show'.FrontDesk::class,
-        'create'.FrontDesk::class,
+        // 'create'.FrontDesk::class,
         'update'.FrontDesk::class,
-        'delete'.FrontDesk::class,
+        // 'delete'.FrontDesk::class,
         // Content Permissions
         'view'.Content::class,
         'show'.Content::class,
@@ -118,9 +118,9 @@ class PermissionSeeder extends Seeder
         // Front Desk permissions
         'view'.FrontDesk::class,
         'show'.FrontDesk::class,
-        'create'.FrontDesk::class,
+        // 'create'.FrontDesk::class,
         'update'.FrontDesk::class,
-        'delete'.FrontDesk::class,
+        // 'delete'.FrontDesk::class,
         // Room permissions
         'view'.Room::class,
         'show'.Room::class,
