@@ -1,15 +1,4 @@
 <div>
-    <div class="flex items-center justify-between mb-4">
-        @if (auth()->user()->can('create' . $this->modelInstance))
-            <flux:button
-                variant="primary"
-                icon="plus"
-                wire:click="create"
-            >
-                Create
-            </flux:button>
-        @endif
-    </div>
     <div class="flex items-center justify-between mt-5 mb-4">
         @if (auth()->user()->isSuperAdmin())
             <div class="flex items-center gap-4">
