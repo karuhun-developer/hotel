@@ -17,6 +17,12 @@ class ApplicationController extends Controller
             ->with('media')
             ->where('tenant_id', auth()->user()->tenant?->tenant_id);
 
+        if ($request->has('ids')) {
+            $ids = is_string($request->ids) ? explode(',', $request->ids) : $request->ids;
+
+            $model->whereIn('id', $ids);
+        }
+
         $model = $this->getDataWithFilter(
             model: $model,
             searchBy: [
