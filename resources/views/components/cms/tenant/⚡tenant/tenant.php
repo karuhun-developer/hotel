@@ -271,7 +271,7 @@ new class extends BaseComponent
             'logo_black' => 'nullable|image:allow_svg|max:51200',
             'main_photo' => 'nullable|image:allow_svg|max:51200',
             'background_photo' => 'nullable|image:allow_svg|max:51200',
-            'intro_video' => 'nullable|file|mimes:mp4,ogx,oga,ogv,ogg,webm,mkv|max:51200',
+            'intro_video' => 'nullable|file|mimes:mp4,ogx,oga,ogv,ogg,webm,mkv|max:102400',
         ]);
 
         // Create or update tenant profile
