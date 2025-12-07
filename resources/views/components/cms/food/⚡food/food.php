@@ -175,6 +175,7 @@ new class extends BaseComponent
             'price',
             'description',
             'status',
+            'image',
         ]);
 
         $this->tenant_id = auth()->user()->tenant?->tenant_id;
