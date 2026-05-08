@@ -4,6 +4,8 @@ A comprehensive hotel/hospital management system built with Laravel 12, Livewire
 
 ![alt text](image.png)
 
+# Postman Collection: [Hotel Management API](https://www.postman.com/restless-comet-598061/workspace/hotel/collection/8500651-176f2ca3-6989-44d8-897b-b439e1882085?action=share&source=copy-link&creator=8500651)
+
 ## Features
 
 ### CMS (Admin Panel)
