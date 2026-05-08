@@ -79,4 +79,10 @@ new class extends BaseComponent
 
         $this->dispatch('toast', type: 'success', message: 'API Key regenerated successfully. Please copy your new API key now as it won\'t be shown again.');
     }
+
+    #[On('apiKeyGenerated')]
+    public function apiKeyGenerated($key)
+    {
+        $this->latestApiKey = $key;
+    }
 };
