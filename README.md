@@ -50,8 +50,8 @@ A comprehensive hotel/hospital management system built with Laravel 12, Livewire
 
 ```bash
 # Clone the repository
-git clone <repository-url> hotel-rewrite
-cd hotel-rewrite
+git clone git@github.com:karuhun-developer/hotel.git hotel
+cd hotel
 
 # Install dependencies
 composer install
@@ -128,19 +128,6 @@ php artisan serve
 ### API (v1)
 
 All API endpoints are prefixed with `/api/v1`.
-
-#### Authentication
-
-| Method | Endpoint                       | Description                  |
-| ------ | ------------------------------ | ---------------------------- |
-| POST   | `/api/v1/auth/login`           | Login (returns Bearer token) |
-| POST   | `/api/v1/auth/register`        | Register new user            |
-| POST   | `/api/v1/auth/forgot-password` | Request password reset       |
-| POST   | `/api/v1/auth/reset-password`  | Reset password               |
-| GET    | `/api/v1/auth/me`              | Get authenticated user       |
-| PUT    | `/api/v1/auth/me`              | Update authenticated user    |
-| POST   | `/api/v1/auth/resend`          | Resend email verification    |
-| DELETE | `/api/v1/auth/logout`          | Logout                       |
 
 #### Protected (requires `X-API-KEY` header or Bearer token)
 

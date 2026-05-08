@@ -17,7 +17,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.'], function () {
     })->name('welcome');
 
     // Authentication Routes
-    require 'v1/auth.php';
+    // require 'v1/auth.php';
 
     // Protected Routes (API Key / Bearer Token / Session)
     Route::middleware('auth.api-key')->group(function () {
