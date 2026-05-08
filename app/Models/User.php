@@ -72,6 +72,16 @@ class User extends Authenticatable implements HasMedia
             ->implode('');
     }
 
+    public function apiKeys()
+    {
+        return $this->hasMany(User\ApiKey::class);
+    }
+
+    public function tenant()
+    {
+        return $this->hasOne(Tenant\TenantUser::class);
+    }
+
     #[Scope]
     public function isSuperAdmin()
     {
@@ -82,5 +92,24 @@ class User extends Authenticatable implements HasMedia
     public function isUser()
     {
         return $this->hasRole('user');
+    }
+
+    #[Scope]
+    public function isHotelAdmin()
+    {
+        return $this->hasRole('hotel_admin');
+    }
+
+    #[Scope]
+    public function isHotelReceptionist()
+    {
+        return $this->hasRole('hotel_receptionist');
+    }
+
+    #[Scope]
+    public function isHotelStaff()
+    {
+        return str()->of($this->roles->pluck('name')->join(','))
+            ->contains(['hotel_admin', 'hotel_receptionist']);
     }
 }

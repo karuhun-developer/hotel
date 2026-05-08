@@ -18,8 +18,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PermissionSeeder::class,
+            TenantSeeder::class,
+            RoomSeeder::class,
             UserSeeder::class,
             SuperadminMenuSeeder::class,
+            HotelAdminMenuSeeder::class,
+            HotelReceptionistMenuSeeder::class,
         ]);
     }
 }
