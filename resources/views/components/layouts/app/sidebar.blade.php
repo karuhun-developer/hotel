@@ -5,12 +5,13 @@
         @livewireStyles
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
-            <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
-
-            <a href="{{ route('cms.dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
-                <x-app-logo />
-            </a>
+        <flux:sidebar sticky collapsible class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+            <flux:sidebar.header>
+                <a href="{{ route('cms.dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
+                    <x-app-logo />
+                </a>
+                <flux:sidebar.collapse class="in-data-flux-sidebar-on-desktop:not-in-data-flux-sidebar-collapsed-desktop:-mr-2" />
+            </flux:sidebar.header>
 
             @php
                 function menuActive($activeRoute = []): bool {
@@ -49,47 +50,45 @@
                 // Check user roles
                 $listMenus = getMenus();
             @endphp
-            <flux:navlist>
-                <flux:navlist.group heading="Platform" class="grid">
-                    @foreach($listMenus as $mainMenu)
-                        @if(count($mainMenu->subMenu) > 0)
-                            <flux:navlist.group
-                                heading="{{ $mainMenu->name }}"
-                                expandable
-                                :expanded="showDropdown(explode(',', $mainMenu->active_pattern))">
-                                @foreach($mainMenu->subMenu as $child)
-                                    <flux:navlist.item
-                                        href="{{ echoRoute($child->url) }}"
-                                        :current="menuActive(explode(',', $child->active_pattern))"
-                                        wire:navigate>
-                                        {{ $child->name }}
-                                    </flux:navlist.item>
-                                @endforeach
-                            </flux:navlist.group>
-                        @else
-                            <flux:navlist.item
-                                icon="{{ $mainMenu->icon }}"
-                                href="{{ echoRoute($mainMenu->url) }}"
-                                :current="menuActive(explode(',', $mainMenu->active_pattern))"
-                                wire:navigate>
-                                {{ $mainMenu->name }}
-                            </flux:navlist.item>
-                        @endif
-                    @endforeach
-                </flux:navlist.group>
-            </flux:navlist>
+            <flux:sidebar.nav>
+                @foreach($listMenus as $mainMenu)
+                    @if(count($mainMenu->subMenu) > 0)
+                        <flux:sidebar.group
+                            heading="{{ $mainMenu->name }}"
+                            expandable
+                            :expanded="showDropdown(explode(',', $mainMenu->active_pattern))">
+                            @foreach($mainMenu->subMenu as $child)
+                                <flux:sidebar.item
+                                    href="{{ echoRoute($child->url) }}"
+                                    :current="menuActive(explode(',', $child->active_pattern))"
+                                    wire:navigate>
+                                    {{ $child->name }}
+                                </flux:sidebar.item>
+                            @endforeach
+                        </flux:sidebar.group>
+                    @else
+                        <flux:sidebar.item
+                            icon="{{ $mainMenu->icon }}"
+                            href="{{ echoRoute($mainMenu->url) }}"
+                            :current="menuActive(explode(',', $mainMenu->active_pattern))"
+                            wire:navigate>
+                            {{ $mainMenu->name }}
+                        </flux:sidebar.item>
+                    @endif
+                @endforeach
+            </flux:sidebar.nav>
 
             <flux:spacer />
 
-            <flux:navlist variant="outline">
-                <flux:navlist.item icon="screen-share" href="{{ url('pulse') }}" target="_blank">
+            <flux:sidebar.nav variant="outline">
+                <flux:sidebar.item icon="screen-share" href="{{ url('pulse') }}" target="_blank">
                     Laravel Pulse
-                </flux:navlist.item>
+                </flux:sidebar.item>
 
-                <flux:navlist.item icon="scroll-text" href="{{ url('logs') }}" target="_blank">
+                <flux:sidebar.item icon="scroll-text" href="{{ url('logs') }}" target="_blank">
                     Laravel Logs
-                </flux:navlist.item>
-            </flux:navlist>
+                </flux:sidebar.item>
+            </flux:sidebar.nav>
 
             <!-- Desktop User Menu -->
             <flux:dropdown class="hidden lg:block" position="bottom" align="start">
