@@ -1,0 +1,91 @@
+@layer theme {
+    :root {
+        --font-sans: IBM Plex Sans, system-ui, sans-serif;
+        --font-mono: IBM Plex Mono, ui-monospace, monospace;
+        --color-accent: oklch(0.55 0.07 275);
+        --color-accent-content: oklch(0.48 0.08 272);
+        --color-accent-foreground: oklch(0.99 0.003 275);
+        --color-zinc-50: oklch(0.99 0.003 270);
+        --color-zinc-100: oklch(0.97 0.005 270);
+        --color-zinc-200: oklch(0.93 0.006 272);
+        --color-zinc-300: oklch(0.87 0.008 272);
+        --color-zinc-400: oklch(0.78 0.008 274);
+        --color-zinc-500: oklch(0.65 0.008 274);
+        --color-zinc-600: oklch(0.50 0.008 272);
+        --color-zinc-700: oklch(0.38 0.008 270);
+        --color-zinc-800: oklch(0.28 0.008 270);
+        --color-zinc-900: oklch(0.20 0.010 272);
+        --color-zinc-950: oklch(0.14 0.008 272);
+        --radius-sm: 0.25rem;
+        --radius-md: 0.375rem;
+        --radius-lg: 0.375rem;
+        --radius-xl: 0.5rem;
+        --radius-2xl: 0.625rem;
+        --shadow-2xs: 0 1px 0 oklch(0.20 0.015 270);
+        --shadow-xs: 0 2px 0 oklch(0.20 0.015 270);
+        --shadow-sm: 0 2px 0 oklch(0.20 0.015 270 / 0.8);
+        --shadow: 0 3px 0 oklch(0.20 0.015 270 / 0.6);
+        --shadow-md: 0 4px 0 oklch(0.20 0.015 270 / 0.5);
+        --shadow-lg: 0 5px 0 oklch(0.20 0.015 270 / 0.4);
+        --shadow-xl: 0 6px 0 oklch(0.20 0.015 270 / 0.35);
+        --shadow-2xl: 0 8px 0 oklch(0.20 0.015 270 / 0.30);
+    }
+}
+
+@layer theme {
+    .dark {
+        --color-accent: oklch(0.70 0.07 275);
+        --color-accent-content: oklch(0.62 0.08 272);
+        --color-accent-foreground: oklch(0.10 0.005 275);
+        --color-zinc-50: oklch(0.97 0.003 270);
+        --color-zinc-100: oklch(0.92 0.004 270);
+        --color-zinc-200: oklch(0.82 0.005 270);
+        --color-zinc-300: oklch(0.70 0.006 270);
+        --color-zinc-400: oklch(0.60 0.008 270);
+        --color-zinc-500: oklch(0.50 0.008 270);
+        --color-zinc-600: oklch(0.40 0.008 270);
+        --color-zinc-700: oklch(0.32 0.008 270);
+        --color-zinc-800: oklch(0.24 0.008 270);
+        --color-zinc-900: oklch(0.20 0.008 270);
+        --color-zinc-950: oklch(0.16 0.008 270);
+    }
+}
+
+
+/* Custom theme styles */
+/* Posty Charcoal: raised buttons with muted slate tones */
+:root {
+    --posty-border: oklch(0.42 0.05 275);
+    --posty-shelf: oklch(0.36 0.06 272);
+}
+.dark {
+    --posty-border: oklch(0.40 0.04 275);
+    --posty-shelf: oklch(0.34 0.05 272);
+}
+[data-flux-button][data-flux-group-target] {
+    border: 1.5px solid var(--posty-border) !important;
+    box-shadow: 0 2px 0 0 var(--posty-shelf);
+    transform: translateY(-2px);
+    top: 2px;
+    font-weight: 700;
+    position: relative;
+}
+[data-flux-button][data-flux-group-target]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 0 0 var(--posty-shelf);
+}
+[data-flux-button][data-flux-group-target]:active {
+    transform: translateY(-1.5px);
+    box-shadow: 0 1.5px 0 0 var(--posty-shelf);
+    transition: all 100ms ease;
+}
+[data-flux-button]:disabled {
+    transform: none !important;
+    box-shadow: none !important;
+    top: 0 !important;
+}
+[data-flux-button-group] [data-flux-button] {
+    box-shadow: none !important;
+    transform: none !important;
+    top: 0 !important;
+}
